@@ -1,11 +1,48 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import "dotenv/config";
 
 
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
+// ------------------------------------
+// ES Module replacement for __dirname
+// ------------------------------------
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
+
 app.use(express.json());
+app.set("view engine", "ejs");
+
+// Tell Express where the views folder is located
+app.set("views", path.join(__dirname, "../frontend/views"));
+
+// ------------------------------------
+// Middleware
+// ------------------------------------
+
+// Parse form data
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files
+app.use(
+    express.static(
+        path.join(__dirname, "../frontend/public")
+    )
+);
+// ------------------------------------
+// Routes
+// ------------------------------------
+
+// Landing page
+app.get("/", (req, res) => {
+    res.render("home");
+});
 
 app.get("/", (req, res) => {
     res.status(200).json({ status: "ok" });
