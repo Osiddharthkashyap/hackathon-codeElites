@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../partials/header", { pageTitle: "AI Settings | LearnFlow AI" }) %>
+<body>
+    <%- include("../partials/navbar") %>
+    <main class="roadmap-form-page"><section class="roadmap-form-card">
+        <span class="onboarding-step-label">PRIVATE AI CONNECTION</span><h1>Bring your own AI key.</h1><p>Your key is encrypted before storage and is used only by the server for your roadmap requests.</p>
+        <% if (error) { %><div class="form-error"><%= error %></div><% } %>
+        <% if (saved) { %><p class="settings-saved" role="status">AI credentials saved securely.</p><% } %>
+        <form action="/settings/ai" method="POST">
+            <label>API endpoint<input type="url" name="baseUrl" value="<%= settings.baseUrl || 'https://api.openai.com/v1/chat/completions' %>" required></label>
+            <label>API key<input type="password" name="apiKey" placeholder="Enter a new key to replace the saved key" autocomplete="new-password"></label>
+            <button type="submit" class="primary-button">Save credentials <span>→</span></button>
+        </form>
+    </section></main>
+    <%- include("../partials/footer") %>
+</body>
+</html>

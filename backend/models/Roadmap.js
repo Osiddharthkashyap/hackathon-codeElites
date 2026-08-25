@@ -18,6 +18,16 @@ const topicSchema = new mongoose.Schema(
         quizScore: { type: Number, min: 0, max: 100, default: null },
         notes: { type: String, trim: true, maxlength: 5000, default: "" },
         aiExplanation: { type: String, trim: true, maxlength: 10000, default: "" },
+        quizQuestions: {
+            type: [{
+                question: { type: String, required: true },
+                options: { type: [String], required: true },
+                answer: { type: Number, required: true, min: 0, max: 3 },
+                explanation: { type: String, default: "" },
+            }],
+            select: false,
+            default: [],
+        },
         completed: { type: Boolean, default: false },
     },
     { _id: true }

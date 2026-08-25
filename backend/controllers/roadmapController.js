@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import Roadmap from "../models/Roadmap.js";
 import User from "../models/User.js";
-import { generateQuiz, generateRoadmap, generateTopicExplanation } from "../services/aiService.js";
+import { generateQuiz, generateRoadmap, generateTopicExplanation, updateRoadmap } from "../services/aiService.js";
+import { getUserCredentials } from "./settingsController.js";
 
 const durationFromStudyTime = (studyTime = "30-60 minutes") => {
     const match = String(studyTime).match(/(\d+)/);
@@ -14,7 +15,7 @@ const getOwnedRoadmap = async (req, res) => {
         res.status(404).render("errors/not-found", { pageTitle: "Roadmap not found" });
         return null;
     }
-    const roadmap = await Roadmap.findOne({ _id: roadmapId, user: req.session.userId });
+    const roadmap = await Roadmap.findOne({ _id: roadmapId, user: req.session.userId }).select("+weeks.topics.quizQuestions");
     if (!roadmap) {
         res.status(403).render("errors/forbidden", { pageTitle: "Roadmap unavailable" });
         return null;
@@ -46,7 +47,7 @@ export const createRoadmap = async (req, res, next) => {
         if (!goal || !["beginner", "intermediate", "advanced"].includes(currentLevel) || durationWeeks < 1 || durationWeeks > 52 || studyHoursPerDay <= 0 || studyHoursPerDay > 24) {
             return res.status(400).render("roadmaps/create", { onboarding: user?.onboarding || {}, error: "Enter valid roadmap details." });
         }
-        const generated = await generateRoadmap({ goal, currentLevel, studyHoursPerDay, durationWeeks, learningStyle: user?.onboarding?.learningStyles?.join(", ") });
+        const generated = await generateRoadmap({ goal, currentLevel, studyHoursPerDay, durationWeeks, learningStyle: user?.onboarding?.learningStyles?.join(", "), credentials: await getUserCredentials(req.session.userId) });
         const roadmap = await Roadmap.create({ user: req.session.userId, goal, currentLevel, studyHoursPerDay, durationWeeks, title: generated.title, description: generated.description, weeks: generated.weeks });
         res.redirect(`/roadmaps/${roadmap._id}`);
     } catch (error) {
@@ -98,7 +99,7 @@ export const explainTopic = async (req, res, next) => {
         if (!roadmap) return;
         const topic = roadmap.weeks.flatMap((week) => week.topics).find((item) => item.id(req.body.topicId));
         if (!topic) return res.status(404).json({ error: "Topic not found." });
-        const explanation = await generateTopicExplanation({ topic: topic.title, style: req.body.style || "simple" });
+        const explanation = await generateTopicExplanation({ topic: topic.title, style: req.body.style || "simple", credentials: await getUserCredentials(req.session.userId) });
         topic.aiExplanation = explanation;
         await roadmap.save();
         res.json({ explanation });
@@ -111,6 +112,50 @@ export const quizTopic = async (req, res, next) => {
         if (!roadmap) return;
         const topic = roadmap.weeks.flatMap((week) => week.topics).find((item) => item.id(req.body.topicId));
         if (!topic) return res.status(404).json({ error: "Topic not found." });
-        res.json(await generateQuiz({ topic: topic.title }));
+        const quiz = await generateQuiz({ topic: topic.title, credentials: await getUserCredentials(req.session.userId) });
+        topic.quizQuestions = quiz.questions;
+        await roadmap.save();
+        res.json({ questions: quiz.questions.map(({ answer, ...question }) => question) });
+    } catch (error) { next(error); }
+};
+
+export const submitQuiz = async (req, res, next) => {
+    try {
+        const roadmap = await getOwnedRoadmap(req, res);
+        if (!roadmap) return;
+        const topic = roadmap.weeks.flatMap((week) => week.topics).find((item) => item.id(req.body.topicId));
+        if (!topic) return res.status(404).json({ error: "Topic not found." });
+        const answers = Array.isArray(req.body.answers) ? req.body.answers : [];
+        const questions = topic.quizQuestions || [];
+        if (!questions.length || answers.length !== questions.length) return res.status(400).json({ error: "Submit an answer for every question." });
+        const correct = questions.reduce((total, question, index) => total + (Number(answers[index]) === question.answer ? 1 : 0), 0);
+        topic.quizScore = Math.round((correct / questions.length) * 100);
+        await roadmap.save();
+        res.json({ score: topic.quizScore, explanations: questions.map((question) => question.explanation) });
+    } catch (error) { next(error); }
+};
+
+export const saveTopicNotes = async (req, res, next) => {
+    try {
+        const roadmap = await getOwnedRoadmap(req, res);
+        if (!roadmap) return;
+        const topic = roadmap.weeks.flatMap((week) => week.topics).find((item) => item.id(req.body.topicId));
+        if (!topic) return res.status(404).json({ error: "Topic not found." });
+        topic.notes = String(req.body.notes || "").slice(0, 5000);
+        await roadmap.save();
+        res.json({ saved: true });
+    } catch (error) { next(error); }
+};
+
+export const replanRoadmap = async (req, res, next) => {
+    try {
+        const roadmap = await getOwnedRoadmap(req, res);
+        if (!roadmap) return;
+        const scores = roadmap.weeks.flatMap((week) => week.topics).map((topic) => topic.quizScore).filter((score) => score !== null && score !== undefined);
+        const average = scores.length ? scores.reduce((total, score) => total + score, 0) / scores.length : 100;
+        if (average >= 60) return res.json({ updated: false, message: "Your roadmap is on track." });
+        roadmap.weeks = await updateRoadmap({ roadmap, credentials: await getUserCredentials(req.session.userId) });
+        await roadmap.save();
+        res.json({ updated: true, message: "Roadmap updated based on your progress." });
     } catch (error) { next(error); }
 };

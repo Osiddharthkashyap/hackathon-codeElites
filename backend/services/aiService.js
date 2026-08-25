@@ -10,16 +10,17 @@ const parseJson = (text) => {
     return JSON.parse(cleaned);
 };
 
-const requestJson = async (prompt) => {
-    if (!process.env.AI_API_KEY) {
+const requestJson = async (prompt, credentials = {}) => {
+    const apiKey = credentials.apiKey || process.env.AI_API_KEY;
+    if (!apiKey) {
         throw new Error("AI roadmap generation is not configured yet.");
     }
 
-    const response = await fetch(endpoint, {
+    const response = await fetch(credentials.baseUrl || endpoint, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.AI_API_KEY}`,
+            Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
             model: process.env.AI_MODEL || "gpt-4o-mini",
@@ -73,13 +74,13 @@ const validateRoadmap = (data) => {
     };
 };
 
-export const generateRoadmap = async ({ goal, currentLevel, studyHoursPerDay, durationWeeks, learningStyle }) => {
+export const generateRoadmap = async ({ goal, currentLevel, studyHoursPerDay, durationWeeks, learningStyle, credentials }) => {
     const prompt = `Generate structured JSON for a ${durationWeeks}-week roadmap for goal "${goal}". Learner level: ${currentLevel}. Daily study hours: ${studyHoursPerDay}. Preferred style: ${learningStyle || "mixed"}. Return {title,description,duration,weeks:[{week,title,difficulty,estimatedHours,learningObjectives:[string],topics:[{title,description,estimatedMinutes,resources:[{title,url,type}]}],miniProject,quizTopics:[string]}]}. Do not return markdown.`;
 
     let lastError;
     for (let attempt = 0; attempt < 2; attempt += 1) {
         try {
-            return validateRoadmap(await requestJson(prompt));
+            return validateRoadmap(await requestJson(prompt, credentials));
         } catch (error) {
             lastError = error;
         }
@@ -87,16 +88,33 @@ export const generateRoadmap = async ({ goal, currentLevel, studyHoursPerDay, du
     throw lastError;
 };
 
-export const generateTopicExplanation = async ({ topic, style = "simple" }) => {
+export const updateRoadmap = async ({ roadmap, credentials }) => {
+    const remainingWeeks = roadmap.weeks.filter((week) => !week.completed).length;
+    if (!remainingWeeks) return roadmap.weeks;
+    const generated = await generateRoadmap({
+        goal: `${roadmap.goal}. Reinforce weak areas based on recent quiz performance.`,
+        currentLevel: roadmap.currentLevel,
+        studyHoursPerDay: roadmap.studyHoursPerDay,
+        durationWeeks: remainingWeeks,
+        credentials,
+    });
+    let nextWeek = roadmap.weeks.find((week) => !week.completed)?.weekNumber || 1;
+    return [
+        ...roadmap.weeks.filter((week) => week.completed),
+        ...generated.weeks.map((week) => ({ ...week, weekNumber: nextWeek++ })),
+    ];
+};
+
+export const generateTopicExplanation = async ({ topic, style = "simple", credentials }) => {
     const prompt = `Explain the learning topic "${topic}" in ${style} style. Return JSON exactly as {"explanation":"..."}. No markdown.`;
-    const data = await requestJson(prompt);
+    const data = await requestJson(prompt, credentials);
     if (!data || typeof data.explanation !== "string" || !data.explanation.trim()) throw new Error("The AI returned an invalid explanation.");
     return data.explanation.trim();
 };
 
-export const generateQuiz = async ({ topic }) => {
+export const generateQuiz = async ({ topic, credentials }) => {
     const prompt = `Create a short quiz about "${topic}". Return JSON exactly as {"questions":[{"question":"...","options":["...","...","...","..."],"answer":0,"explanation":"..."}]}. Include 3 questions and no markdown.`;
-    const data = await requestJson(prompt);
+    const data = await requestJson(prompt, credentials);
     if (!data || !Array.isArray(data.questions) || data.questions.length === 0) throw new Error("The AI returned an invalid quiz.");
     return { questions: data.questions.slice(0, 10).map((question) => ({
         question: String(question.question),

@@ -9,8 +9,9 @@ import connectDB, { isValidMongoUri } from "./config/db.js";
 import { requireAuth, requireRole } from "./middleware/authMiddlewares.js";
 import User from "./models/User.js";
 import roadmapRoutes from "./routes/roadmapRoutes.js";
-import { explainTopic, quizTopic } from "./controllers/roadmapController.js";
+import { explainTopic, quizTopic, saveTopicNotes, submitQuiz } from "./controllers/roadmapController.js";
 import Roadmap from "./models/Roadmap.js";
+import settingsRoutes from "./routes/settingsRoutes.js";
 
 
 // ------------------------------------
@@ -81,6 +82,7 @@ app.use((req, res, next) => {
 
 app.use("/", authRoutes);
 app.use("/roadmaps", roadmapRoutes);
+app.use("/settings", settingsRoutes);
 app.post("/api/roadmap/explanation", requireAuth, (req, res, next) => {
     req.params.id = req.body.roadmapId;
     explainTopic(req, res, next);
@@ -88,6 +90,14 @@ app.post("/api/roadmap/explanation", requireAuth, (req, res, next) => {
 app.post("/api/roadmap/quiz", requireAuth, (req, res, next) => {
     req.params.id = req.body.roadmapId;
     quizTopic(req, res, next);
+});
+app.post("/api/roadmap/quiz/submit", requireAuth, (req, res, next) => {
+    req.params.id = req.body.roadmapId;
+    submitQuiz(req, res, next);
+});
+app.post("/api/roadmap/notes", requireAuth, (req, res, next) => {
+    req.params.id = req.body.roadmapId;
+    saveTopicNotes(req, res, next);
 });
 
 // ------------------------------------
