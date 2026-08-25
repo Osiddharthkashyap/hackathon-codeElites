@@ -49,7 +49,11 @@ app.get("/onboarding", (req, res) => {
 });
 
 app.get("/onboarding/experience", (req, res) => {
-    res.send("Experience onboarding page coming next.");
+    res.render("onboarding/experience");
+});
+
+app.get("/onboarding/preferences", (req, res) => {
+    res.send("Preferences onboarding page coming next.");
 });
 
 app.get("/login", (req, res) => {

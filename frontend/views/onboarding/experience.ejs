@@ -1,0 +1,189 @@
+<%- include("../partials/header", { pageTitle: "Your Experience | LearnFlow AI" }) %>
+
+    <main class="onboarding-page">
+
+        <section class="onboarding-card">
+
+            <!-- Brand -->
+
+            <a href="/" class="onboarding-brand">
+
+                <span class="onboarding-brand-icon">
+                    ✦
+                </span>
+
+                <span>
+                    LearnFlow AI
+                </span>
+
+            </a>
+
+
+            <!-- Progress Steps -->
+
+            <div class="onboarding-progress">
+
+                <div class="progress-step completed">
+
+                    <div class="step-number">
+                        ✓
+                    </div>
+
+                    <span>
+                        Goal
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line completed-line"></div>
+
+
+                <div class="progress-step active">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <span>
+                        Experience
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <div class="progress-step">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <span>
+                        Preferences
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Content -->
+
+            <div class="onboarding-content">
+
+                <span class="onboarding-step-label">
+                    STEP 2 OF 3
+                </span>
+
+                <h1>
+                    What's your current level?
+                </h1>
+
+                <p class="onboarding-description">
+                    This helps us create a roadmap that matches
+                    your current knowledge and experience.
+                </p>
+
+            </div>
+
+
+            <!-- Experience Form -->
+
+            <form id="experienceForm" class="experience-form">
+
+                <!-- Beginner -->
+
+                <button type="button" class="experience-option selected" data-level="beginner">
+
+                    <div class="experience-radio"></div>
+
+                    <div class="experience-content">
+
+                        <h3>
+                            Beginner
+                        </h3>
+
+                        <p>
+                            I'm just getting started and have little
+                            or no experience.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+                <!-- Intermediate -->
+
+                <button type="button" class="experience-option" data-level="intermediate">
+
+                    <div class="experience-radio"></div>
+
+                    <div class="experience-content">
+
+                        <h3>
+                            Intermediate
+                        </h3>
+
+                        <p>
+                            I understand the basics and have some
+                            practical experience.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+                <!-- Advanced -->
+
+                <button type="button" class="experience-option" data-level="advanced">
+
+                    <div class="experience-radio"></div>
+
+                    <div class="experience-content">
+
+                        <h3>
+                            Advanced
+                        </h3>
+
+                        <p>
+                            I'm comfortable with the fundamentals and
+                            want to deepen my expertise.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+                <!-- Actions -->
+
+                <div class="onboarding-actions">
+
+                    <a href="/onboarding" class="back-button">
+                        ← Back
+                    </a>
+
+
+                    <button type="submit" class="continue-button">
+                        Continue
+                        <span>
+                            →
+                        </span>
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script src="/js/onboarding.js"></script>
+
+    <%- include("../partials/footer") %>

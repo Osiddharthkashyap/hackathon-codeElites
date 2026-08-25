@@ -95,3 +95,68 @@ goalForm?.addEventListener("submit", (event) => {
     window.location.href = "/onboarding/experience";
 
 });
+
+const experienceForm =
+    document.getElementById("experienceForm");
+
+
+const experienceOptions =
+    document.querySelectorAll(".experience-option");
+
+
+let selectedExperience = "beginner";
+
+
+experienceOptions.forEach((option) => {
+
+    option.addEventListener("click", () => {
+
+        experienceOptions.forEach((experienceOption) => {
+
+            experienceOption.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+        option.classList.add("selected");
+
+
+        selectedExperience =
+            option.dataset.level;
+
+    });
+
+});
+
+
+experienceForm?.addEventListener("submit", (event) => {
+
+    event.preventDefault();
+
+
+    const savedData =
+        JSON.parse(
+            localStorage.getItem(
+                "learnFlowOnboarding"
+            )
+        ) || {};
+
+
+    const updatedData = {
+        ...savedData,
+        experience: selectedExperience
+    };
+
+
+    localStorage.setItem(
+        "learnFlowOnboarding",
+        JSON.stringify(updatedData)
+    );
+
+
+    window.location.href =
+        "/onboarding/preferences";
+
+});

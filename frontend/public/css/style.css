@@ -1362,3 +1362,144 @@ footer {
         font-size: 24px;
     }
 }
+
+
+/* =========================================
+   ONBOARDING EXPERIENCE
+========================================= */
+
+.progress-step.completed {
+    color: #2f9e72;
+}
+
+.progress-step.completed .step-number {
+    background: #2f9e72;
+    border-color: #2f9e72;
+
+    color: #ffffff;
+}
+
+.progress-line.completed-line {
+    background: #2f9e72;
+}
+
+
+/* Experience Form */
+
+.experience-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+
+/* Experience Option */
+
+.experience-option {
+    width: 100%;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 16px;
+
+    padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ee;
+    border-radius: 10px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.experience-option:hover {
+    border-color: #5637c9;
+
+    transform: translateY(-1px);
+}
+
+
+.experience-option.selected {
+    background: #f8f6ff;
+
+    border-color: #5637c9;
+
+    box-shadow:
+        0 8px 20px rgba(86, 55, 201, 0.08);
+}
+
+
+/* Radio */
+
+.experience-radio {
+    width: 20px;
+    height: 20px;
+
+    flex-shrink: 0;
+
+    margin-top: 2px;
+
+    border: 2px solid #c8ced8;
+    border-radius: 50%;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.experience-option.selected .experience-radio {
+    border-color: #5637c9;
+
+    box-shadow:
+        inset 0 0 0 4px #ffffff;
+
+    background: #5637c9;
+}
+
+
+/* Content */
+
+.experience-content h3 {
+    margin-bottom: 5px;
+
+    color: #1f2433;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.experience-content p {
+    color: #737b8c;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* Actions Spacing */
+
+.experience-form .onboarding-actions {
+    margin-top: 14px;
+}
+
+
+@media (max-width: 600px) {
+
+    .experience-option {
+        padding: 16px;
+    }
+
+}
