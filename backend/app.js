@@ -44,14 +44,14 @@ app.get("/", (req, res) => {
     res.render("home");
 });
 
-<<<<<<< HEAD
 app.get("/onboarding", (req, res) => {
     res.render("onboarding/goal");
 });
 
 app.get("/onboarding/experience", (req, res) => {
     res.send("Experience onboarding page coming next.");
-=======
+});
+
 app.get("/login", (req, res) => {
     res.render("auth/login");
 });
@@ -62,7 +62,6 @@ app.get("/register", (req, res) => {
 
 app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok" });
->>>>>>> 8576ef79ab1a8e5d1b47d0ccb788b97f6f7141cb
 });
 
 app.listen(PORT, () => {
