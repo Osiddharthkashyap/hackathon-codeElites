@@ -19,6 +19,13 @@ export const showAiSettings = async (req, res, next) => {
 
 export const saveAiSettings = async (req, res, next) => {
     try {
+        if (!process.env.CREDENTIAL_ENCRYPTION_KEY || process.env.CREDENTIAL_ENCRYPTION_KEY.length < 32) {
+            return res.status(500).render("settings/ai", {
+                settings: { baseUrl: req.body.baseUrl, provider: req.body.provider },
+                error: "Server setup is incomplete: CREDENTIAL_ENCRYPTION_KEY must be configured in backend/.env.",
+                saved: false,
+            });
+        }
         const provider = req.body.provider === "openai-compatible" ? "openai-compatible" : "gemini";
         const endpoint = safeUrl(String(req.body.baseUrl || "").trim(), provider);
         const apiKey = String(req.body.apiKey || "").trim();
