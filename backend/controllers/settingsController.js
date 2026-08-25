@@ -46,5 +46,9 @@ export const getUserCredentials = async (userId) => {
     const baseUrl = user.aiCredentials.provider === "gemini" && user.aiCredentials.baseUrl?.includes("gemini-2.0-flash")
         ? geminiEndpoint
         : user.aiCredentials.baseUrl;
-    return { provider: user.aiCredentials.provider, baseUrl, apiKey: decryptSecret(user.aiCredentials.encryptedApiKey) };
+    try {
+        return { provider: user.aiCredentials.provider, baseUrl, apiKey: decryptSecret(user.aiCredentials.encryptedApiKey) };
+    } catch (error) {
+        throw new Error("Saved AI credentials cannot be decrypted. Set the original CREDENTIAL_ENCRYPTION_KEY, or save the Gemini key again after configuring a new one.");
+    }
 };
