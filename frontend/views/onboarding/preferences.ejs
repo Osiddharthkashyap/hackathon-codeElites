@@ -1,0 +1,301 @@
+<%- include("../partials/header", { pageTitle: "Your Preferences | LearnFlow AI" }) %>
+
+    <main class="onboarding-page">
+
+        <section class="onboarding-card">
+
+            <!-- Brand -->
+
+            <a href="/" class="onboarding-brand">
+
+                <span class="onboarding-brand-icon">
+                    ✦
+                </span>
+
+                <span>
+                    LearnFlow AI
+                </span>
+
+            </a>
+
+
+            <!-- Progress Steps -->
+
+            <div class="onboarding-progress">
+
+                <div class="progress-step completed">
+
+                    <div class="step-number">
+                        ✓
+                    </div>
+
+                    <span>
+                        Goal
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line completed-line"></div>
+
+
+                <div class="progress-step completed">
+
+                    <div class="step-number">
+                        ✓
+                    </div>
+
+                    <span>
+                        Experience
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line completed-line"></div>
+
+
+                <div class="progress-step active">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <span>
+                        Preferences
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Content -->
+
+            <div class="onboarding-content">
+
+                <span class="onboarding-step-label">
+                    STEP 3 OF 3
+                </span>
+
+                <h1>
+                    Set your learning preferences
+                </h1>
+
+                <p class="onboarding-description">
+                    Tell us how much time you can commit so we can
+                    create a realistic learning roadmap for you.
+                </p>
+
+            </div>
+
+
+            <!-- Preferences Form -->
+
+            <form id="preferencesForm" class="preferences-form">
+
+                <!-- Study Time -->
+
+                <div class="preference-section">
+
+                    <h3>
+                        How much time can you study?
+                    </h3>
+
+                    <p>
+                        Choose the amount of time you can realistically
+                        dedicate each day.
+                    </p>
+
+
+                    <div class="time-options">
+
+                        <button type="button" class="time-option" data-time="15-30 minutes">
+
+                            <span class="time-value">
+                                15–30 min
+                            </span>
+
+                            <span class="time-description">
+                                Light pace
+                            </span>
+
+                        </button>
+
+
+                        <button type="button" class="time-option selected" data-time="30-60 minutes">
+
+                            <span class="time-value">
+                                30–60 min
+                            </span>
+
+                            <span class="time-description">
+                                Balanced pace
+                            </span>
+
+                        </button>
+
+
+                        <button type="button" class="time-option" data-time="1-2 hours">
+
+                            <span class="time-value">
+                                1–2 hours
+                            </span>
+
+                            <span class="time-description">
+                                Intensive pace
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Learning Style -->
+
+                <div class="preference-section">
+
+                    <h3>
+                        How do you prefer to learn?
+                    </h3>
+
+                    <p>
+                        You can select multiple learning styles.
+                    </p>
+
+
+                    <div class="learning-style-options">
+
+                        <button type="button" class="learning-style-option selected" data-style="video">
+
+                            <span class="preference-icon">
+                                ▶
+                            </span>
+
+                            <span>
+                                Videos
+                            </span>
+
+                        </button>
+
+
+                        <button type="button" class="learning-style-option selected" data-style="reading">
+
+                            <span class="preference-icon">
+                                📖
+                            </span>
+
+                            <span>
+                                Reading
+                            </span>
+
+                        </button>
+
+
+                        <button type="button" class="learning-style-option" data-style="practice">
+
+                            <span class="preference-icon">
+                                ⚡
+                            </span>
+
+                            <span>
+                                Practice
+                            </span>
+
+                        </button>
+
+
+                        <button type="button" class="learning-style-option" data-style="projects">
+
+                            <span class="preference-icon">
+                                💻
+                            </span>
+
+                            <span>
+                                Projects
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Target -->
+
+                <div class="preference-section">
+
+                    <h3>
+                        What's your target?
+                    </h3>
+
+
+                    <div class="target-options">
+
+                        <label class="target-option">
+
+                            <input type="radio" name="target" value="learn-at-my-own-pace" checked>
+
+                            <span>
+                                Learn at my own pace
+                            </span>
+
+                        </label>
+
+
+                        <label class="target-option">
+
+                            <input type="radio" name="target" value="finish-as-soon-as-possible">
+
+                            <span>
+                                Finish as soon as possible
+                            </span>
+
+                        </label>
+
+
+                        <label class="target-option">
+
+                            <input type="radio" name="target" value="prepare-for-career">
+
+                            <span>
+                                Prepare for a career goal
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Actions -->
+
+                <div class="onboarding-actions">
+
+                    <a href="/onboarding/experience" class="back-button">
+                        ← Back
+                    </a>
+
+
+                    <button type="submit" class="continue-button">
+                        Create My Roadmap
+                        <span>
+                            →
+                        </span>
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script src="/js/onboarding.js"></script>
+
+    <%- include("../partials/footer") %>

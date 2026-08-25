@@ -160,3 +160,114 @@ experienceForm?.addEventListener("submit", (event) => {
         "/onboarding/preferences";
 
 });
+
+/* =========================================
+   ONBOARDING STEP 3 - PREFERENCES
+========================================= */
+
+const preferencesForm =
+    document.getElementById("preferencesForm");
+
+
+const timeOptions =
+    document.querySelectorAll(".time-option");
+
+
+const learningStyleOptions =
+    document.querySelectorAll(".learning-style-option");
+
+
+let selectedStudyTime = "30-60 minutes";
+
+
+timeOptions.forEach((option) => {
+
+    option.addEventListener("click", () => {
+
+        timeOptions.forEach((timeOption) => {
+
+            timeOption.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+        option.classList.add("selected");
+
+
+        selectedStudyTime =
+            option.dataset.time;
+
+    });
+
+});
+
+
+learningStyleOptions.forEach((option) => {
+
+    option.addEventListener("click", () => {
+
+        option.classList.toggle("selected");
+
+    });
+
+});
+
+
+preferencesForm?.addEventListener("submit", (event) => {
+
+    event.preventDefault();
+
+
+    const selectedLearningStyles =
+        Array.from(
+            document.querySelectorAll(
+                ".learning-style-option.selected"
+            )
+        ).map((option) => {
+
+            return option.dataset.style;
+
+        });
+
+
+    const selectedTarget =
+        document.querySelector(
+            'input[name="target"]:checked'
+        );
+
+
+    const savedData =
+        JSON.parse(
+            localStorage.getItem(
+                "learnFlowOnboarding"
+            )
+        ) || {};
+
+
+    const completeOnboardingData = {
+
+        ...savedData,
+
+        studyTime: selectedStudyTime,
+
+        learningStyles: selectedLearningStyles,
+
+        target:
+            selectedTarget?.value || ""
+
+    };
+
+
+    localStorage.setItem(
+        "learnFlowOnboarding",
+        JSON.stringify(
+            completeOnboardingData
+        )
+    );
+
+
+    window.location.href = "/roadmap";
+
+});

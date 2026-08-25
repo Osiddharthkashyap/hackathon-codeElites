@@ -53,7 +53,11 @@ app.get("/onboarding/experience", (req, res) => {
 });
 
 app.get("/onboarding/preferences", (req, res) => {
-    res.send("Preferences onboarding page coming next.");
+    res.render("onboarding/preferences");
+});
+
+app.get("/roadmap", (req, res) => {
+    res.send("Roadmap generation page coming next.");
 });
 
 app.get("/login", (req, res) => {
