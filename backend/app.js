@@ -49,8 +49,16 @@ app.get("/onboarding/preferences", (req, res) => {
     res.render("onboarding/preferences");
 });
 
+app.get("/roadmap/generating", (req, res) => {
+    res.render("roadmap/generating");
+});
+
 app.get("/roadmap", (req, res) => {
-    res.send("Roadmap generation page coming next.");
+    res.render("roadmap/index");
+});
+
+app.get("/learning", (req, res) => {
+    res.send("Learning page coming next.");
 });
 
 app.get("/login", (req, res) => {

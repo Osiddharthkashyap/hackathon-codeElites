@@ -268,6 +268,6 @@ preferencesForm?.addEventListener("submit", (event) => {
     );
 
 
-    window.location.href = "/roadmap";
+    window.location.href = "/roadmap/generating";
 
 });

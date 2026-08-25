@@ -1,0 +1,92 @@
+<%- include("../partials/header", { pageTitle: "Creating Your Roadmap | LearnFlow AI" }) %>
+
+    <main class="roadmap-generating-page">
+
+        <section class="roadmap-generating-card">
+
+            <a href="/" class="onboarding-brand">
+
+                <span class="onboarding-brand-icon">
+                    ✦
+                </span>
+
+                <span>
+                    LearnFlow AI
+                </span>
+
+            </a>
+
+
+            <div class="generating-visual">
+
+                <div class="generating-orbit orbit-one"></div>
+
+                <div class="generating-orbit orbit-two"></div>
+
+                <div class="generating-core">
+                    ✦
+                </div>
+
+            </div>
+
+
+            <div class="generating-content">
+
+                <span class="onboarding-step-label">
+                    PERSONALIZING YOUR EXPERIENCE
+                </span>
+
+                <h1>
+                    Building your learning roadmap
+                </h1>
+
+                <p>
+                    We're turning your goals, experience, and
+                    preferences into a learning path designed
+                    specifically for you.
+                </p>
+
+            </div>
+
+
+            <div class="generating-progress">
+
+                <div class="generating-progress-track">
+
+                    <div class="generating-progress-bar" id="generatingProgressBar"></div>
+
+                </div>
+
+                <span id="generatingProgressText">
+                    0%
+                </span>
+
+            </div>
+
+
+            <div class="generating-status">
+
+                <div class="status-item active" id="statusProfile">
+                    <span>✓</span>
+                    Understanding your profile
+                </div>
+
+                <div class="status-item" id="statusRoadmap">
+                    <span>2</span>
+                    Planning your learning path
+                </div>
+
+                <div class="status-item" id="statusResources">
+                    <span>3</span>
+                    Selecting learning resources
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="/js/roadmap.js"></script>
+
+    <%- include("../partials/footer") %>
