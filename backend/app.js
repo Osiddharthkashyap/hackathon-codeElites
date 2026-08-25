@@ -12,6 +12,7 @@ import roadmapRoutes from "./routes/roadmapRoutes.js";
 import { explainTopic, quizTopic, saveTopicNotes, submitQuiz } from "./controllers/roadmapController.js";
 import Roadmap from "./models/Roadmap.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
+import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
 
 
 // ------------------------------------
@@ -53,6 +54,10 @@ app.use(
     express.static(
         path.join(__dirname, "../frontend/public")
     )
+);
+app.use(
+    "/vendor/animejs",
+    express.static(path.join(__dirname, "../node_modules/animejs/dist/bundles"))
 );
 app.use(
     session({
@@ -241,9 +246,12 @@ app.post("/api/onboarding", requireAuth, async (req, res, next) => {
 
 app.get("/dashboard", requireAuth, async (req, res, next) => {
     try {
+        const user = await User.findById(req.session.userId).lean();
         const roadmap = await Roadmap.findOne({ user: req.session.userId }).sort({ updatedAt: -1 }).lean();
-        res.render("dashboard/index", { user: req.session.user, roadmap });
-    } catch (error) { next(error); }
+        res.render("dashboard/index", { user: user || req.session.user, roadmap });
+    } catch (error) {
+        next(error);
+    }
 });
 
 app.get("/health", (req, res) => {
@@ -253,6 +261,8 @@ app.get("/health", (req, res) => {
 app.get("/admin", requireAuth, requireRole("admin"), (req, res) => {
     res.render("admin/index");
 });
+
+app.use(notFoundMiddleware(app));
 
 const startServer = async () => {
     try {

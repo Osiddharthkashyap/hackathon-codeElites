@@ -5,62 +5,47 @@
     <body>
         <%- include("../partials/navbar") %>
 
-            <main class="features-section">
-                <div class="container">
-                    <div class="section-heading">
-                        <span>STUDENT DASHBOARD</span>
-                        <h2>
-                            Welcome back, <%= user?.name || "Learner" %>!
-                        </h2>
-                        <p>
-                            Your account is active. Next, we will connect goals, learning plans,
-                            and quiz progress to this dashboard.
-                        </p>
-                    </div>
+            <% const onboarding = user?.onboarding || {}; const hasPlan = Boolean(roadmap || onboarding.completedAt); const goal = roadmap?.goal || onboarding.customGoal || onboarding.learningGoal || "your first learning goal"; const roadmapPath = roadmap ? `/roadmaps/${roadmap._id}` : "/onboarding"; %>
+            <main class="dashboard-page">
+                <div class="dashboard-container">
+                    <section class="dashboard-welcome dashboard-card" data-animate>
+                        <div>
+                            <span class="onboarding-step-label">YOUR LEARNING SPACE</span>
+                            <h1>Welcome back, <%= user?.name || "Learner" %>.</h1>
+                            <p><%= hasPlan ? `Your ${goal} journey is ready for the next focused session.` : "Set your goal and let LearnFlow build a tailored study path." %></p>
+                        </div>
+                        <a href="<%= roadmapPath %>" class="primary-button"><%= hasPlan ? "View roadmap" : "Create my plan" %></a>
+                    </section>
 
-                    <div class="feature-grid">
-                        <article class="feature-card">
-                            <h3>Continue Learning</h3>
-                            <% if (roadmap) { %>
-                                <p><strong><%= roadmap.title %></strong></p>
-                                <p><%= roadmap.progress %>% complete</p>
-                                <p><a href="/roadmaps/<%= roadmap._id %>" class="primary-button">Resume</a></p>
-                            <% } else { %>
-                                <p>Create your first personalized roadmap.</p>
-                                <p><a href="/roadmaps/create" class="primary-button">Create roadmap</a></p>
-                            <% } %>
+                    <section class="dashboard-stats" aria-label="Learning overview">
+                        <article class="dashboard-stat dashboard-card" data-animate><span class="dashboard-stat-icon">◎</span><div><strong data-count="<%= hasPlan ? 1 : 0 %>">0</strong><span>Active roadmap</span></div></article>
+                        <article class="dashboard-stat dashboard-card" data-animate><span class="dashboard-stat-icon">◷</span><div><strong data-count="0">0</strong><span>Minutes studied</span></div></article>
+                        <article class="dashboard-stat dashboard-card" data-animate><span class="dashboard-stat-icon">✓</span><div><strong data-count="0">0</strong><span>Topics completed</span></div></article>
+                        <article class="dashboard-stat dashboard-card" data-animate><span class="dashboard-stat-icon">✦</span><div><strong data-count="0">0</strong><span>Current streak</span></div></article>
+                    </section>
+
+                    <section class="dashboard-grid">
+                        <article class="dashboard-card learning-focus" data-animate>
+                            <div class="dashboard-card-heading"><div><span class="onboarding-step-label">NEXT UP</span><h2><%= hasPlan ? goal : "Build your roadmap" %></h2></div><span class="status-pill <%= hasPlan ? "ready" : "pending" %>"><%= hasPlan ? "Ready" : "Set up" %></span></div>
+                            <p><%= hasPlan ? `Your selected level is ${onboarding.experience || "beginner"}. Pick up where you left off and keep your momentum.` : "Tell us your goal, experience, and available time to unlock a personalized learning roadmap." %></p>
+                            <div class="dashboard-focus-actions"><a class="primary-button" href="<%= hasPlan ? "/roadmap" : "/onboarding" %>"><%= hasPlan ? "Continue learning" : "Start onboarding" %></a><a class="text-action" href="/learning">Open learning space →</a></div>
                         </article>
 
-                        <article class="feature-card">
-                            <h3>Account</h3>
-                            <p><strong>Name:</strong>
-                                <%= user?.name || "-" %>
-                            </p>
-                            <p><strong>Email:</strong>
-                                <%= user?.email || "-" %>
-                            </p>
-                            <p><strong>Role:</strong>
-                                <%= user?.role || "student" %>
-                            </p>
+                        <article class="dashboard-card progress-card" data-animate>
+                            <div class="dashboard-card-heading"><div><span class="onboarding-step-label">PROGRESS</span><h2>Learning momentum</h2></div></div>
+                            <div class="progress-visual"><svg viewBox="0 0 100 100" aria-label="0 percent complete"><circle class="progress-track" cx="50" cy="50" r="42"></circle><circle class="progress-ring" data-progress-ring="0" cx="50" cy="50" r="42"></circle></svg><strong>0%</strong></div>
+                            <p>Complete your first topic to begin tracking progress.</p>
                         </article>
 
-                        <article class="feature-card">
-                            <h3>Quick Actions</h3>
-                            <p>Continue onboarding and create your first personalized roadmap.</p>
-                            <p><a href="/onboarding" class="primary-button">Start Onboarding</a></p>
+                        <article class="dashboard-card profile-card" data-animate>
+                            <div class="dashboard-card-heading"><div><span class="onboarding-step-label">PROFILE</span><h2>Learning profile</h2></div></div>
+                            <dl><div><dt>Experience</dt><dd><%= onboarding.experience || "Not set" %></dd></div><div><dt>Study time</dt><dd><%= onboarding.studyTime || "Not set" %></dd></div><div><dt>Learning styles</dt><dd><%= onboarding.learningStyles?.length ? onboarding.learningStyles.join(", ") : "Not set" %></dd></div></dl>
                         </article>
-
-                        <article class="feature-card">
-                            <h3>Session</h3>
-                            <p>You are authenticated using server-side sessions.</p>
-                            <form action="/logout" method="POST">
-                                <button type="submit" class="secondary-button">Logout</button>
-                            </form>
-                        </article>
-                    </div>
+                    </section>
                 </div>
             </main>
 
+            <script src="/js/dashboard.js"></script>
             <%- include("../partials/footer") %>
     </body>
 

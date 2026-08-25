@@ -1,5 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include("../partials/header", { pageTitle: pageTitle || "Not found | LearnFlow AI" }) %>
-<body><main class="features-section"><div class="container"><div class="section-heading"><span>NOT FOUND</span><h1>We could not find that roadmap.</h1><p>It may have been removed or the link may be out of date.</p><a class="primary-button" href="/roadmaps">View your roadmaps</a></div></div></main><%- include("../partials/footer") %></body>
+<%- include("../partials/header", { pageTitle }) %>
+<body>
+    <%- include("../partials/navbar") %>
+    <main class="not-found-page">
+        <section class="not-found-card" aria-labelledby="notFoundHeading">
+            <p class="not-found-code" aria-hidden="true">404</p>
+            <span class="onboarding-step-label">ROUTE NOT FOUND</span>
+            <h1 id="notFoundHeading">Oops! Page not found</h1>
+            <p class="not-found-description">We couldn't find the page you're looking for. It may have been moved, renamed, or doesn't exist.</p>
+
+            <div class="not-found-request" aria-label="Requested URL">
+                <span>You tried to visit</span>
+                <code><%= requestedPath %></code>
+            </div>
+
+            <% if (suggestion) { %>
+                <aside class="route-suggestion" aria-label="Suggested route">
+                    <span>Did you mean?</span>
+                    <strong><%= suggestion.label %></strong>
+                    <code><%= suggestion.path %></code>
+                    <a class="primary-button" href="<%= suggestion.path %>">Go to <%= suggestion.label %></a>
+                </aside>
+            <% } else { %>
+                <p class="not-found-no-match">We couldn't find a matching page.</p>
+            <% } %>
+
+            <nav class="not-found-actions" aria-label="404 page navigation">
+                <% if (isAuthenticated) { %>
+                    <a class="secondary-button" href="/dashboard">Back to Dashboard</a>
+                <% } else { %>
+                    <a class="secondary-button" href="/login">Login</a>
+                <% } %>
+                <a class="secondary-button" href="/">Go Home</a>
+                <button class="secondary-button" type="button" onclick="window.history.back()">Go Back</button>
+            </nav>
+        </section>
+    </main>
+    <%- include("../partials/footer") %>
+</body>
 </html>
