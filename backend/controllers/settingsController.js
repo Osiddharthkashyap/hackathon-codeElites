@@ -14,7 +14,7 @@ const safeUrl = (value, provider) => {
 
 export const showAiSettings = async (req, res, next) => {
     try {
-        const user = await User.findById(req.session.userId).select("+aiCredentials").lean();
+        const user = await User.findById(req.session.userId).select("+aiCredentials.encryptedApiKey").lean();
         res.render("settings/ai", { settings: user?.aiCredentials || {}, error: null, saved: false });
     } catch (error) { next(error); }
 };
@@ -41,7 +41,7 @@ export const saveAiSettings = async (req, res, next) => {
 };
 
 export const getUserCredentials = async (userId) => {
-    const user = await User.findById(userId).select("+aiCredentials").lean();
+    const user = await User.findById(userId).select("+aiCredentials.encryptedApiKey").lean();
     if (!user?.aiCredentials?.encryptedApiKey) return {};
     const baseUrl = user.aiCredentials.provider === "gemini" && user.aiCredentials.baseUrl?.includes("gemini-2.0-flash")
         ? geminiEndpoint
