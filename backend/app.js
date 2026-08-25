@@ -49,6 +49,10 @@ app.use(
     )
 );
 app.use(
+    "/vendor/animejs",
+    express.static(path.join(__dirname, "../node_modules/animejs/dist/bundles"))
+);
+app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,
@@ -215,10 +219,13 @@ app.post("/api/onboarding", requireAuth, async (req, res, next) => {
     } catch (error) { next(error); }
 });
 
-app.get("/dashboard", requireAuth, (req, res) => {
-    res.render("dashboard/index", {
-        user: req.session.user,
-    });
+app.get("/dashboard", requireAuth, async (req, res, next) => {
+    try {
+        const user = await User.findById(req.session.userId).lean();
+        res.render("dashboard/index", { user: user || req.session.user });
+    } catch (error) {
+        next(error);
+    }
 });
 
 app.get("/health", (req, res) => {
