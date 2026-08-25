@@ -13,28 +13,21 @@ const PORT = process.env.PORT || 3000;
 // ------------------------------------
 
 const __filename = fileURLToPath(import.meta.url);
-
 const __dirname = path.dirname(__filename);
 
-app.use(express.json());
-app.set("view engine", "ejs");
 
-// Tell Express where the views folder is located
+app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../frontend/views"));
 
-// ------------------------------------
-// Middleware
-// ------------------------------------
-
-// Parse form data
+// Middlewares
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files
 app.use(
     express.static(
         path.join(__dirname, "../frontend/public")
     )
 );
+
 // ------------------------------------
 // Routes
 // ------------------------------------
