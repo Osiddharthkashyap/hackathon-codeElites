@@ -240,10 +240,17 @@ Create a `.env` file in the root directory:
 
 ```env
 PORT=3000
-MONGODB_URI=your_mongodb_connection_string
+NODE_ENV=development
+# Use a dedicated MongoDB user restricted to this application's database.
+MONGODB_URI=mongodb+srv://APP_USER:URL_ENCODED_PASSWORD@CLUSTER/learnflow?retryWrites=true&w=majority
 AI_API_KEY=your_ai_api_key
-SESSION_SECRET=your_session_secret
+# Use a random secret at least 32 characters long; never commit this file.
+SESSION_SECRET=replace-with-a-random-64-plus-character-secret
 ```
+
+The server deliberately will not start until `MONGODB_URI` and `SESSION_SECRET`
+are configured. This keeps user credentials and server-side sessions out of an
+insecure fallback store.
 
 ### 5. Start the Application
 

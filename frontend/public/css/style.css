@@ -2470,3 +2470,14 @@ footer {
     }
 
 }
+
+.nav-logout,
+.mobile-menu form {
+    margin: 0;
+}
+
+.nav-button,
+.mobile-start-button {
+    font: inherit;
+    cursor: pointer;
+}

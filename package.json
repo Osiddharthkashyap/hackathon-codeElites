@@ -4,6 +4,7 @@
   "description": "",
   "main": "backend/app.js",
   "scripts": {
+    "start": "node backend/app.js",
     "dev": "nodemon backend/app.js"
   },
   "repository": {

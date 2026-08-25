@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../partials/header", { pageTitle: "Dashboard | LearnFlow AI" }) %>
+
+    <body>
+        <%- include("../partials/navbar") %>
+
+            <main class="features-section">
+                <div class="container">
+                    <div class="section-heading">
+                        <span>STUDENT DASHBOARD</span>
+                        <h2>
+                            Welcome back, <%= user?.name || "Learner" %>!
+                        </h2>
+                        <p>
+                            Your account is active. Next, we will connect goals, learning plans,
+                            and quiz progress to this dashboard.
+                        </p>
+                    </div>
+
+                    <div class="feature-grid">
+                        <article class="feature-card">
+                            <h3>Account</h3>
+                            <p><strong>Name:</strong>
+                                <%= user?.name || "-" %>
+                            </p>
+                            <p><strong>Email:</strong>
+                                <%= user?.email || "-" %>
+                            </p>
+                            <p><strong>Role:</strong>
+                                <%= user?.role || "student" %>
+                            </p>
+                        </article>
+
+                        <article class="feature-card">
+                            <h3>Quick Actions</h3>
+                            <p>Continue onboarding and create your first personalized roadmap.</p>
+                            <p><a href="/onboarding" class="primary-button">Start Onboarding</a></p>
+                        </article>
+
+                        <article class="feature-card">
+                            <h3>Session</h3>
+                            <p>You are authenticated using server-side sessions.</p>
+                            <form action="/logout" method="POST">
+                                <button type="submit" class="secondary-button">Logout</button>
+                            </form>
+                        </article>
+                    </div>
+                </div>
+            </main>
+
+            <%- include("../partials/footer") %>
+    </body>
+
+</html>

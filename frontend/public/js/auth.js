@@ -10,8 +10,16 @@ passwordToggleButtons.forEach((button) => {
         const passwordWrapper =
             button.closest(".password-input-wrapper");
 
+        if (!passwordWrapper) {
+            return;
+        }
+
         const passwordInput =
             passwordWrapper.querySelector("input");
+
+        if (!passwordInput) {
+            return;
+        }
 
 
         const isVisible =
@@ -37,47 +45,27 @@ const registerForm =
 
 
 registerForm?.addEventListener("submit", (event) => {
+    const passwordField = document.getElementById("password");
+    const confirmPasswordField = document.getElementById("confirmPassword");
 
-    event.preventDefault();
+    if (!passwordField || !confirmPasswordField) {
+        return;
+    }
 
-
-    const password =
-        document.getElementById("password").value;
+    const password = passwordField.value;
 
 
     const confirmPassword =
-        document.getElementById("confirmPassword").value;
+        confirmPasswordField.value;
 
 
     if (password !== confirmPassword) {
+
+        event.preventDefault();
 
         alert("Passwords do not match.");
 
         return;
 
     }
-
-
-    // Temporary navigation.
-    // Backend authentication will be added later.
-
-    window.location.href = "/onboarding";
-
-});
-
-
-const loginForm =
-    document.getElementById("loginForm");
-
-
-loginForm?.addEventListener("submit", (event) => {
-
-    event.preventDefault();
-
-
-    // Temporary navigation.
-    // Backend authentication will be added later.
-
-    window.location.href = "/onboarding";
-
 });

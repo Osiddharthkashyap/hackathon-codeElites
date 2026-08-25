@@ -260,14 +260,21 @@ preferencesForm?.addEventListener("submit", (event) => {
     };
 
 
-    localStorage.setItem(
-        "learnFlowOnboarding",
-        JSON.stringify(
-            completeOnboardingData
-        )
-    );
-
-
-    window.location.href = "/roadmap/generating";
+    fetch("/api/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify(completeOnboardingData),
+    })
+        .then(async (response) => {
+            if (response.ok) {
+                localStorage.removeItem("learnFlowOnboarding");
+                window.location.href = "/roadmap/generating";
+                return;
+            }
+            const payload = await response.json().catch(() => ({}));
+            throw new Error(payload.error || "We could not save your preferences.");
+        })
+        .catch((error) => alert(error.message));
 
 });

@@ -12,8 +12,13 @@
         </nav>
 
         <div class="nav-actions">
-            <a href="/login" class="login-link">Login</a>
-            <a href="/register" class="nav-button">Get Started</a>
+            <% if (currentUser) { %>
+                <a href="/dashboard" class="login-link">Dashboard</a>
+                <form action="/logout" method="POST" class="nav-logout"><button type="submit" class="nav-button">Log out</button></form>
+            <% } else { %>
+                <a href="/login" class="login-link">Login</a>
+                <a href="/register" class="nav-button">Get Started</a>
+            <% } %>
         </div>
 
         <button class="mobile-menu-button" id="mobileMenuButton" aria-label="Open navigation menu">☰</button>
@@ -23,7 +28,12 @@
         <a href="#features">Features</a>
         <a href="#how-it-works">How It Works</a>
         <a href="#about">About</a>
-        <a href="/login">Login</a>
-        <a href="/register" class="mobile-start-button">Get Started</a>
+        <% if (currentUser) { %>
+            <a href="/dashboard">Dashboard</a>
+            <form action="/logout" method="POST"><button type="submit" class="mobile-start-button">Log out</button></form>
+        <% } else { %>
+            <a href="/login">Login</a>
+            <a href="/register" class="mobile-start-button">Get Started</a>
+        <% } %>
     </div>
 </header>

@@ -1,4 +1,7 @@
+<!DOCTYPE html>
+<html lang="en">
 <%- include("../partials/header", { pageTitle: "My Learning Roadmap | LearnFlow AI" }) %>
+<body>
 
     <main class="roadmap-page">
 
@@ -15,7 +18,7 @@
                     </span>
 
                     <h1>
-                        Your Full Stack Development Journey
+                        Your <%= onboarding.customGoal || onboarding.learningGoal || "Learning" %> Journey
                     </h1>
 
                     <p>
@@ -76,7 +79,7 @@
                     <div>
 
                         <strong>
-                            Beginner
+                            <%= onboarding.experience || "Beginner" %>
                         </strong>
 
                         <span>
@@ -97,7 +100,7 @@
                     <div>
 
                         <strong>
-                            30–60 min
+                            <%= onboarding.studyTime || "30–60 min" %>
                         </strong>
 
                         <span>
@@ -538,3 +541,5 @@
     <script src="/js/roadmap.js"></script>
 
     <%- include("../partials/footer") %>
+</body>
+</html>
