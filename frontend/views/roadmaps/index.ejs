@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../partials/header", { pageTitle: "Learning Roadmaps | LearnFlow AI" }) %>
+<body>
+    <%- include("../partials/navbar") %>
+    <main class="roadmaps-page">
+        <div class="container roadmap-dashboard">
+            <div class="roadmaps-heading">
+                <div><span class="onboarding-step-label">PERSONALIZED LEARNING</span><h1>Your roadmaps</h1><p>Build focused paths that adapt as you learn.</p></div>
+                <a class="primary-button" href="/roadmaps/create">Create roadmap <span>+</span></a>
+            </div>
+            <% if (!roadmaps.length) { %>
+                <section class="roadmap-empty"><h2>Create your first roadmap.</h2><p>Tell us what you want to learn and AI will shape the path around you.</p><a class="primary-button" href="/roadmaps/create">Start creating</a></section>
+            <% } else { %>
+                <div class="roadmap-card-grid">
+                    <% roadmaps.forEach((roadmap) => { %>
+                        <a class="roadmap-summary-card" href="/roadmaps/<%= roadmap._id %>">
+                            <span class="onboarding-step-label"><%= roadmap.status %></span><h2><%= roadmap.title %></h2><p><%= roadmap.description %></p>
+                            <div class="roadmap-card-progress"><span style="width: <%= roadmap.progress %>%"></span></div><strong><%= roadmap.progress %>% complete</strong>
+                        </a>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+    </main>
+    <%- include("../partials/footer") %>
+</body>
+</html>

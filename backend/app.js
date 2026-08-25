@@ -8,6 +8,9 @@ import authRoutes from "./routes/authRoute.js";
 import connectDB, { isValidMongoUri } from "./config/db.js";
 import { requireAuth, requireRole } from "./middleware/authMiddlewares.js";
 import User from "./models/User.js";
+import roadmapRoutes from "./routes/roadmapRoutes.js";
+import { explainTopic, quizTopic } from "./controllers/roadmapController.js";
+import Roadmap from "./models/Roadmap.js";
 
 
 // ------------------------------------
@@ -77,6 +80,15 @@ app.use((req, res, next) => {
 });
 
 app.use("/", authRoutes);
+app.use("/roadmaps", roadmapRoutes);
+app.post("/api/roadmap/explanation", requireAuth, (req, res, next) => {
+    req.params.id = req.body.roadmapId;
+    explainTopic(req, res, next);
+});
+app.post("/api/roadmap/quiz", requireAuth, (req, res, next) => {
+    req.params.id = req.body.roadmapId;
+    quizTopic(req, res, next);
+});
 
 // ------------------------------------
 // Routes
@@ -214,10 +226,11 @@ app.post("/api/onboarding", requireAuth, async (req, res, next) => {
     } catch (error) { next(error); }
 });
 
-app.get("/dashboard", requireAuth, (req, res) => {
-    res.render("dashboard/index", {
-        user: req.session.user,
-    });
+app.get("/dashboard", requireAuth, async (req, res, next) => {
+    try {
+        const roadmap = await Roadmap.findOne({ user: req.session.userId }).sort({ updatedAt: -1 }).lean();
+        res.render("dashboard/index", { user: req.session.user, roadmap });
+    } catch (error) { next(error); }
 });
 
 app.get("/health", (req, res) => {

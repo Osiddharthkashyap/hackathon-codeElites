@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../partials/header", { pageTitle: roadmap.title + " | LearnFlow AI" }) %>
+<body>
+    <%- include("../partials/navbar") %>
+    <main class="roadmaps-page"><div class="container roadmap-dashboard">
+        <a href="/roadmaps" class="learning-back">← Your roadmaps</a>
+        <section class="roadmap-hero"><span class="onboarding-step-label">YOUR AI-GENERATED ROADMAP</span><h1><%= roadmap.title %></h1><p><%= roadmap.description %></p><div class="roadmap-hero-progress"><strong><%= roadmap.progress %>%</strong><div><span style="width: <%= roadmap.progress %>%"></span></div><small>Overall progress</small></div></section>
+        <div class="roadmap-stats"><div><strong><%= roadmap.weeks.length %></strong><span>Total weeks</span></div><div><strong><%= roadmap.completedTopics %></strong><span>Topics complete</span></div><div><strong><%= roadmap.currentLevel %></strong><span>Current level</span></div><div><strong><%= roadmap.studyHoursPerDay %>h</strong><span>Per day</span></div></div>
+        <section class="roadmap-weeks"><h2>Your learning path</h2><% roadmap.weeks.forEach((week) => { %><article class="roadmap-week <%= week.completed ? 'completed' : '' %>"><header><div><span>WEEK <%= week.weekNumber %></span><h3><%= week.title %></h3></div><strong><%= week.progress %>%</strong></header><p class="week-meta"><%= week.difficulty %> · <%= week.estimatedHours %> hours</p><ul><% week.learningObjectives.forEach((objective) => { %><li><%= objective %></li><% }) %></ul><div class="topic-links"><% week.topics.forEach((topic) => { %><a href="/roadmaps/<%= roadmap._id %>/topic/<%= topic._id %>"><%= topic.completed ? '✓ ' : '' %><%= topic.title %></a><% }) %></div><p class="mini-project"><strong>Mini project:</strong> <%= week.miniProject %></p></article><% }) %></section>
+    </div></main><%- include("../partials/footer") %>
+</body>
+</html>

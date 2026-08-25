@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../partials/header", { pageTitle: "Create Roadmap | LearnFlow AI" }) %>
+<body>
+    <main class="roadmap-form-page">
+        <section class="roadmap-form-card">
+            <a href="/roadmaps" class="learning-back">← Your roadmaps</a>
+            <span class="onboarding-step-label">AI ROADMAP BUILDER</span><h1>Design a path that fits your life.</h1><p>Share your goal and constraints. LearnFlow AI will create a practical plan you can actually follow.</p>
+            <% if (error) { %><div class="form-error"><%= error %></div><% } %>
+            <form action="/roadmaps" method="POST" data-roadmap-form>
+                <label>Learning goal<input name="goal" required maxlength="500" value="<%= onboarding.customGoal || onboarding.learningGoal || '' %>" placeholder="e.g. Build full-stack web applications"></label>
+                <label>Current level<select name="currentLevel"><option value="beginner" <%= onboarding.experience === 'beginner' ? 'selected' : '' %>>Beginner</option><option value="intermediate" <%= onboarding.experience === 'intermediate' ? 'selected' : '' %>>Intermediate</option><option value="advanced" <%= onboarding.experience === 'advanced' ? 'selected' : '' %>>Advanced</option></select></label>
+                <div class="roadmap-form-row"><label>Duration in weeks<input type="number" name="durationWeeks" min="1" max="52" value="6" required></label><label>Hours per day<input type="number" name="studyHoursPerDay" min="0.25" max="24" step="0.25" value="1" required></label></div>
+                <button class="primary-button" type="submit">Generate my roadmap <span>→</span></button><p class="roadmap-form-status" data-roadmap-status hidden>Generating your personalized roadmap...</p>
+            </form>
+        </section>
+    </main>
+    <script src="/js/roadmaps.js"></script>
+    <%- include("../partials/footer") %>
+</body>
+</html>

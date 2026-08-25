@@ -14,6 +14,7 @@
         <div class="nav-actions">
             <% if (currentUser) { %>
                 <a href="/dashboard" class="login-link">Dashboard</a>
+                <a href="/roadmaps" class="login-link">Roadmaps</a>
                 <form action="/logout" method="POST" class="nav-logout"><button type="submit" class="nav-button">Log out</button></form>
             <% } else { %>
                 <a href="/login" class="login-link">Login</a>
@@ -30,6 +31,7 @@
         <a href="#about">About</a>
         <% if (currentUser) { %>
             <a href="/dashboard">Dashboard</a>
+            <a href="/roadmaps">Roadmaps</a>
             <form action="/logout" method="POST"><button type="submit" class="mobile-start-button">Log out</button></form>
         <% } else { %>
             <a href="/login">Login</a>

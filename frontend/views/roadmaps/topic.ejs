@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../partials/header", { pageTitle: topic.title + " | LearnFlow AI" }) %>
+<body>
+    <main class="roadmap-topic-page"><div class="container topic-shell">
+        <a href="/roadmaps/<%= roadmap._id %>" class="learning-back">← Back to roadmap</a>
+        <span class="onboarding-step-label">WEEK <%= week.weekNumber %> · <%= week.difficulty %></span><h1><%= topic.title %></h1><p class="topic-description"><%= topic.description || 'Build confidence with this focused topic.' %></p>
+        <section class="topic-panel"><div class="topic-panel-header"><span>ESTIMATED TIME</span><strong><%= topic.estimatedMinutes %> minutes</strong></div><h2>Study this topic</h2><p>Work through the material, ask AI for an explanation, then mark the topic complete when you are ready.</p><div class="topic-actions"><button type="button" class="primary-button" data-explain-topic data-roadmap-id="<%= roadmap._id %>" data-topic-id="<%= topic._id %>">Explain with AI</button><button type="button" class="secondary-button" data-complete-topic data-roadmap-id="<%= roadmap._id %>" data-topic-id="<%= topic._id %>">Mark as complete</button></div><p class="topic-status" data-topic-status role="status"></p><div class="ai-explanation" data-ai-explanation><%= topic.aiExplanation || '' %></div><label class="topic-notes">Your notes<textarea data-topic-notes maxlength="5000"><%= topic.notes || '' %></textarea></label></section>
+    </div></main><script src="/js/roadmaps.js"></script><%- include("../partials/footer") %>
+</body>
+</html>
