@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
             completedAt: Date,
         },
         aiCredentials: {
-            provider: { type: String, enum: ["openai-compatible"], default: "openai-compatible" },
+            provider: { type: String, enum: ["openai-compatible", "gemini"], default: "gemini" },
             baseUrl: { type: String, trim: true, maxlength: 300 },
             encryptedApiKey: { type: String, select: false },
             updatedAt: Date,

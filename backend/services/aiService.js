@@ -16,13 +16,22 @@ const requestJson = async (prompt, credentials = {}) => {
         throw new Error("AI roadmap generation is not configured yet.");
     }
 
-    const response = await fetch(credentials.baseUrl || endpoint, {
+    const provider = credentials.provider || "openai-compatible";
+    const isGemini = provider === "gemini";
+    const requestUrl = isGemini
+        ? `${credentials.baseUrl || "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"}${(credentials.baseUrl || "").includes("?") ? "&" : "?"}key=${encodeURIComponent(apiKey)}`
+        : credentials.baseUrl || endpoint;
+    const response = await fetch(requestUrl, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
+            ...(isGemini ? {} : { Authorization: `Bearer ${apiKey}` }),
         },
-        body: JSON.stringify({
+        body: JSON.stringify(isGemini ? {
+            systemInstruction: { parts: [{ text: "You create concise, practical learning plans. Return valid JSON only." }] },
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.2, responseMimeType: "application/json" },
+        } : {
             model: process.env.AI_MODEL || "gpt-4o-mini",
             temperature: 0.2,
             response_format: { type: "json_object" },
@@ -36,7 +45,9 @@ const requestJson = async (prompt, credentials = {}) => {
 
     if (!response.ok) throw new Error("The AI provider is unavailable.");
     const payload = await response.json();
-    const content = payload.choices?.[0]?.message?.content;
+    const content = isGemini
+        ? payload.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("")
+        : payload.choices?.[0]?.message?.content;
     if (!content) throw new Error("The AI provider returned an empty response.");
     return parseJson(content);
 };
