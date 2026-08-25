@@ -51,7 +51,7 @@ export const createRoadmap = async (req, res, next) => {
         const roadmap = await Roadmap.create({ user: req.session.userId, goal, currentLevel, studyHoursPerDay, durationWeeks, title: generated.title, description: generated.description, weeks: generated.weeks });
         res.redirect(`/roadmaps/${roadmap._id}`);
     } catch (error) {
-        if (error.message.includes("AI")) return res.status(503).render("roadmaps/create", { onboarding: {}, error: "AI is temporarily unavailable. Please try again." });
+        if (error.message.includes("AI")) return res.status(503).render("roadmaps/create", { onboarding: {}, error: error.message });
         next(error);
     }
 };

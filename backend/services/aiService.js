@@ -1,4 +1,5 @@
 const endpoint = process.env.AI_API_URL || "https://api.openai.com/v1/chat/completions";
+const geminiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 const normaliseDifficulty = (value) => {
     const difficulty = String(value || "beginner").toLowerCase();
@@ -19,7 +20,7 @@ const requestJson = async (prompt, credentials = {}) => {
     const provider = credentials.provider || "openai-compatible";
     const isGemini = provider === "gemini";
     const requestUrl = isGemini
-        ? `${credentials.baseUrl || "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"}${(credentials.baseUrl || "").includes("?") ? "&" : "?"}key=${encodeURIComponent(apiKey)}`
+        ? `${credentials.baseUrl || geminiEndpoint}${(credentials.baseUrl || "").includes("?") ? "&" : "?"}key=${encodeURIComponent(apiKey)}`
         : credentials.baseUrl || endpoint;
     const response = await fetch(requestUrl, {
         method: "POST",
@@ -43,7 +44,9 @@ const requestJson = async (prompt, credentials = {}) => {
         signal: AbortSignal.timeout(30000),
     });
 
-    if (!response.ok) throw new Error("The AI provider is unavailable.");
+    if (!response.ok) {
+        throw new Error(`AI provider request failed with status ${response.status}. Check your API key, model access, and quota.`);
+    }
     const payload = await response.json();
     const content = isGemini
         ? payload.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("")
