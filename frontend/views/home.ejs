@@ -1,36 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+<%- include("partials/header", { pageTitle: "LearnFlow AI | Home" }) %>
 
-<head>
-    <meta charset="UTF-8">
+    <body>
+        <%- include("partials/navbar") %>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <main>
+                <%- include("partials/home/hero") %>
+                    <%- include("partials/home/features") %>
+            </main>
 
-    <title>LearnFlow AI</title>
+            <%- include("partials/footer") %>
 
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-
-<body>
-
-    <main class="container">
-
-        <h1>LearnFlow AI 🚀</h1>
-
-        <p class="tagline">
-            Your learning path evolves with you.
-        </p>
-
-        <p>
-            EJS frontend and Express backend are connected successfully.
-        </p>
-
-        <a href="/test" class="button">
-            Test Backend
-        </a>
-
-    </main>
-
-</body>
+                <script src="/js/home.js"></script>
+    </body>
 
 </html>
