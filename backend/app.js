@@ -31,6 +31,9 @@ const isProduction = process.env.NODE_ENV === "production";
 if (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32) {
     throw new Error("SESSION_SECRET must be set to at least 32 characters.");
 }
+if (!process.env.CREDENTIAL_ENCRYPTION_KEY || process.env.CREDENTIAL_ENCRYPTION_KEY.length < 32) {
+    throw new Error("CREDENTIAL_ENCRYPTION_KEY must be set to at least 32 characters.");
+}
 if (!isValidMongoUri(process.env.MONGODB_URI)) {
     throw new Error("MONGODB_URI must be a valid MongoDB connection string.");
 }

@@ -31,6 +31,7 @@ export const saveAiSettings = async (req, res, next) => {
         const provider = req.body.provider === "openai-compatible" ? "openai-compatible" : "gemini";
         const endpoint = safeUrl(String(req.body.baseUrl || "").trim(), provider);
         const apiKey = String(req.body.apiKey || "").trim();
+        if (!apiKey) throw new Error("An API key is required when saving AI settings.");
         const update = { "aiCredentials.baseUrl": endpoint, "aiCredentials.provider": provider, "aiCredentials.updatedAt": new Date() };
         if (apiKey) update["aiCredentials.encryptedApiKey"] = encryptSecret(apiKey);
         await User.findByIdAndUpdate(req.session.userId, { $set: update }, { runValidators: true });

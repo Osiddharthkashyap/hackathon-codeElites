@@ -10,7 +10,7 @@
         <form action="/settings/ai" method="POST">
             <label>AI provider<select name="provider" data-provider-select><option value="gemini" <%= (settings.provider || 'gemini') === 'gemini' ? 'selected' : '' %>>Google Gemini</option><option value="openai-compatible" <%= settings.provider === 'openai-compatible' ? 'selected' : '' %>>OpenAI-compatible</option></select></label>
             <label>API endpoint<input type="url" name="baseUrl" data-endpoint-input value="<%= settings.baseUrl || 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent' %>" required></label>
-            <label>API key<input type="password" name="apiKey" placeholder="Enter a new key to replace the saved key" autocomplete="new-password"></label>
+            <label>API key<input type="password" name="apiKey" placeholder="Paste your Gemini API key" autocomplete="new-password" required></label>
             <button type="submit" class="primary-button">Save credentials <span>→</span></button>
         </form>
     </section></main>
