@@ -1,0 +1,236 @@
+<%- include("../partials/header", {
+    pageTitle: "Knowledge Check | LearnFlow AI"
+}) %>
+
+<main class="quiz-page">
+
+    <div class="quiz-container">
+
+        <!-- Top Bar -->
+
+        <header class="quiz-topbar">
+
+            <a
+                href="/learning"
+                class="learning-back"
+            >
+                ← Learning
+            </a>
+
+            <div class="quiz-brand">
+                LearnFlow AI
+            </div>
+
+        </header>
+
+
+        <!-- Quiz Header -->
+
+        <section class="quiz-header">
+
+            <div>
+
+                <span class="onboarding-step-label">
+                    KNOWLEDGE CHECK
+                </span>
+
+                <h1>
+                    HTML Fundamentals
+                </h1>
+
+                <p>
+                    Let's see what you remember from the lesson.
+                    Don't worry — this is about learning, not judging.
+                </p>
+
+            </div>
+
+
+            <div class="quiz-score-preview">
+
+                <span>
+                    QUESTIONS
+                </span>
+
+                <strong>
+                    <%= quiz.questions.length %>
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- Quiz Progress -->
+
+        <section class="quiz-progress-section">
+
+            <div class="quiz-progress-top">
+
+                <span id="questionCounter">
+                    Question 1 of <%= quiz.questions.length %>
+                </span>
+
+                <span id="progressPercentage">
+                    20%
+                </span>
+
+            </div>
+
+            <div class="quiz-progress-track">
+
+                <div
+                    id="quizProgressBar"
+                    class="quiz-progress-bar"
+                    style="width: 20%"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Quiz Form -->
+
+        <form
+            id="quizForm"
+            class="quiz-form"
+        >
+
+            <% quiz.questions.forEach((question, index) => { %>
+
+                <section
+                    class="quiz-question-card"
+                    data-question="<%= index %>"
+                >
+
+                    <div class="question-number">
+
+                        <span>
+                            QUESTION
+                        </span>
+
+                        <strong>
+                            <%= String(index + 1).padStart(2, "0") %>
+                        </strong>
+
+                    </div>
+
+
+                    <h2>
+                        <%= question.question %>
+                    </h2>
+
+
+                    <div class="quiz-options">
+
+                        <% question.options.forEach((option, optionIndex) => { %>
+
+                            <label
+                                class="quiz-option"
+                            >
+
+                                <input
+                                    type="radio"
+                                    name="question-<%= question.id %>"
+                                    value="<%= optionIndex %>"
+                                >
+
+                                <span class="quiz-option-marker">
+                                    <%= String.fromCharCode(65 + optionIndex) %>
+                                </span>
+
+                                <span class="quiz-option-text">
+                                    <%= option %>
+                                </span>
+
+                            </label>
+
+                        <% }); %>
+
+                    </div>
+
+                </section>
+
+            <% }); %>
+
+
+            <!-- Navigation -->
+
+            <div class="quiz-navigation">
+
+                <button
+                    type="button"
+                    id="previousQuestionButton"
+                    class="quiz-secondary-button"
+                    disabled
+                >
+                    ← Previous
+                </button>
+
+
+                <div class="quiz-navigation-info">
+
+                    <span id="answeredCount">
+                        0 answered
+                    </span>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="nextQuestionButton"
+                    class="quiz-primary-button"
+                >
+                    Next
+                    <span>→</span>
+                </button>
+
+
+                <button
+                    type="submit"
+                    id="submitQuizButton"
+                    class="quiz-primary-button quiz-submit-button"
+                >
+                    Submit Quiz
+                    <span>✓</span>
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- Encouragement -->
+
+        <div class="quiz-note">
+
+            <span>✦</span>
+
+            <p>
+                Take your time. Your answers help LearnFlow AI
+                understand what you know and what needs more practice.
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    window.learnFlowQuiz = {
+        totalQuestions:
+            Number("<%= quiz.questions.length %>")
+    };
+
+</script>
+
+
+<script src="/js/quiz.js"></script>
+
+
+<%- include("../partials/footer") %>

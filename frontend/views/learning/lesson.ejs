@@ -1,0 +1,407 @@
+<%- include("../partials/header", {
+    pageTitle: "HTML Fundamentals | LearnFlow AI"
+}) %>
+
+<main class="lesson-page">
+
+    <div class="lesson-container">
+
+        <!-- Top Bar -->
+
+        <header class="lesson-topbar">
+
+            <a
+                href="/learning"
+                class="learning-back"
+            >
+                ← Back to lessons
+            </a>
+
+            <div class="lesson-topbar-progress">
+
+                <span>
+                    Lesson 1 of 6
+                </span>
+
+                <div class="lesson-mini-progress">
+
+                    <div
+                        style="width: 16%"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Lesson Header -->
+
+        <section class="lesson-heading">
+
+            <span class="onboarding-step-label">
+                LESSON 01 · WEB FOUNDATIONS
+            </span>
+
+            <h1>
+                HTML Fundamentals
+            </h1>
+
+            <p>
+                Understand how HTML gives structure and meaning
+                to every webpage.
+            </p>
+
+            <div class="lesson-heading-meta">
+
+                <span>
+                    ◷ 30 min
+                </span>
+
+                <span>
+                    ◉ Beginner
+                </span>
+
+                <span>
+                    ⚡ Practical
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- Lesson Layout -->
+
+        <div class="lesson-layout">
+
+            <!-- Main Content -->
+
+            <article class="lesson-content">
+
+                <section class="lesson-block">
+
+                    <span class="lesson-block-label">
+                        01 · INTRODUCTION
+                    </span>
+
+                    <h2>
+                        What is HTML?
+                    </h2>
+
+                    <p>
+                        HTML stands for HyperText Markup Language.
+                        It is the standard language used to structure
+                        content on the web.
+                    </p>
+
+                    <p>
+                        HTML doesn't tell the browser how something
+                        should look. Instead, it tells the browser
+                        what each piece of content means.
+                    </p>
+
+                    <div class="lesson-tip">
+
+                        <span>
+                            ✦
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Think of HTML as the skeleton.
+                            </strong>
+
+                            <p>
+                                CSS controls the appearance, while
+                                JavaScript adds behavior.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="lesson-block">
+
+                    <span class="lesson-block-label">
+                        02 · CORE CONCEPT
+                    </span>
+
+                    <h2>
+                        HTML Elements
+                    </h2>
+
+                    <p>
+                        HTML uses elements to describe the structure
+                        of content. Most elements have an opening tag,
+                        content, and a closing tag.
+                    </p>
+
+
+                    <div class="code-example">
+
+                        <div class="code-header">
+
+                            <span>
+                                HTML
+                            </span>
+
+                            <button
+                                class="copy-code-button"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+
+                        <pre><code>&lt;h1&gt;Hello, world!&lt;/h1&gt;
+
+&lt;p&gt;This is my first webpage.&lt;/p&gt;</code></pre>
+
+                    </div>
+
+                </section>
+
+
+                <section class="lesson-block">
+
+                    <span class="lesson-block-label">
+                        03 · IMPORTANT ELEMENTS
+                    </span>
+
+                    <h2>
+                        Common HTML elements
+                    </h2>
+
+
+                    <div class="concept-grid">
+
+                        <div class="concept-card">
+
+                            <code>&lt;h1&gt;</code>
+
+                            <h3>
+                                Headings
+                            </h3>
+
+                            <p>
+                                Used for page and section headings.
+                            </p>
+
+                        </div>
+
+
+                        <div class="concept-card">
+
+                            <code>&lt;p&gt;</code>
+
+                            <h3>
+                                Paragraphs
+                            </h3>
+
+                            <p>
+                                Used for blocks of text.
+                            </p>
+
+                        </div>
+
+
+                        <div class="concept-card">
+
+                            <code>&lt;a&gt;</code>
+
+                            <h3>
+                                Links
+                            </h3>
+
+                            <p>
+                                Connect users to other pages.
+                            </p>
+
+                        </div>
+
+
+                        <div class="concept-card">
+
+                            <code>&lt;img&gt;</code>
+
+                            <h3>
+                                Images
+                            </h3>
+
+                            <p>
+                                Embeds images into webpages.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="lesson-block">
+
+                    <span class="lesson-block-label">
+                        04 · PRACTICE
+                    </span>
+
+                    <h2>
+                        Try it yourself
+                    </h2>
+
+                    <p>
+                        Create a heading that says
+                        <strong>"My Learning Journey"</strong>
+                        using the correct HTML element.
+                    </p>
+
+
+                    <div class="practice-box">
+
+                        <textarea
+                            id="practiceEditor"
+                            placeholder="Write your HTML here..."
+                            spellcheck="false"
+                        ></textarea>
+
+
+                        <div class="practice-actions">
+
+                            <button
+                                type="button"
+                                id="runPracticeButton"
+                                class="practice-run-button"
+                            >
+                                Run Code
+                                <span>▶</span>
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="practice-output"
+                            id="practiceOutput"
+                        >
+                            Your result will appear here.
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Complete Lesson -->
+
+                <section class="lesson-complete-section">
+
+                    <div>
+
+                        <span>
+                            Ready to continue?
+                        </span>
+
+                        <h2>
+                            Complete this lesson
+                        </h2>
+
+                        <p>
+                            Mark the lesson complete when you've
+                            finished the material and practice.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        id="completeLessonButton"
+                        class="complete-lesson-button"
+                    >
+                        Mark as Complete
+                        <span>✓</span>
+                    </button>
+
+                </section>
+
+            </article>
+
+
+            <!-- Sidebar -->
+
+            <aside class="lesson-sidebar">
+
+                <div class="lesson-sidebar-card">
+
+                    <span class="lesson-sidebar-label">
+                        IN THIS LESSON
+                    </span>
+
+
+                    <nav>
+
+                        <a
+                            href="#"
+                            class="active"
+                        >
+                            What is HTML?
+                        </a>
+
+                        <a href="#">
+                            HTML Elements
+                        </a>
+
+                        <a href="#">
+                            Common Elements
+                        </a>
+
+                        <a href="#">
+                            Practice
+                        </a>
+
+                    </nav>
+
+                </div>
+
+
+                <div class="lesson-sidebar-card">
+
+                    <span class="lesson-sidebar-label">
+                        YOUR PROGRESS
+                    </span>
+
+                    <strong>
+                        0 / 6
+                    </strong>
+
+                    <p>
+                        lessons completed
+                    </p>
+
+                    <div class="sidebar-progress">
+
+                        <div
+                            style="width: 0%"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script src="/js/learning.js"></script>
+
+<%- include("../partials/footer") %>

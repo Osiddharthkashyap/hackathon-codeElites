@@ -110,8 +110,97 @@ app.get("/roadmap", requireAuth, async (req, res, next) => {
     } catch (error) { next(error); }
 });
 
-app.get("/learning", requireAuth, (req, res) => {
-    res.render("learning/index");
+app.get("/learning", (req, res) => {
+    res.render("learning/index", {
+        lesson: {
+            slug: "html-fundamentals",
+            title: "HTML Fundamentals",
+            description:
+                "Build a strong foundation in the language that gives every webpage its structure."
+        }
+    });
+});
+
+app.get("/learning/html-fundamentals", (req, res) => {
+    res.render("learning/lesson", {
+        lesson: {
+            title: "HTML Fundamentals",
+            duration: "25 min",
+            objective:
+                "Learn how HTML elements organize content into a clear, meaningful webpage."
+        }
+    });
+});
+
+app.get("/quiz", (req, res) => {
+    res.render("quiz/index", {
+        quiz: {
+            title: "HTML Fundamentals",
+            description:
+                "Let's check what you learned in this lesson.",
+            questions: [
+                {
+                    id: 1,
+                    question:
+                        "What is the primary purpose of HTML?",
+                    options: [
+                        "To style webpages",
+                        "To structure webpage content",
+                        "To create databases",
+                        "To manage server requests"
+                    ]
+                },
+                {
+                    id: 2,
+                    question:
+                        "Which HTML element is used for the main heading of a page?",
+                    options: [
+                        "<p>",
+                        "<head>",
+                        "<h1>",
+                        "<title>"
+                    ]
+                },
+                {
+                    id: 3,
+                    question:
+                        "Which element is commonly used to create a link?",
+                    options: [
+                        "<link>",
+                        "<a>",
+                        "<href>",
+                        "<url>"
+                    ]
+                },
+                {
+                    id: 4,
+                    question:
+                        "What does CSS primarily control?",
+                    options: [
+                        "Page structure",
+                        "Database logic",
+                        "Visual presentation",
+                        "Server authentication"
+                    ]
+                },
+                {
+                    id: 5,
+                    question:
+                        "Which element is used to create a paragraph?",
+                    options: [
+                        "<text>",
+                        "<paragraph>",
+                        "<p>",
+                        "<content>"
+                    ]
+                }
+            ]
+        }
+    });
+});
+
+app.get("/results", (req, res) => {
+    res.render("results/index");
 });
 
 app.post("/api/onboarding", requireAuth, async (req, res, next) => {
