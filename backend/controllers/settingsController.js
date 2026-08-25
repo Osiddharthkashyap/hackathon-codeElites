@@ -1,7 +1,9 @@
 import User from "../models/User.js";
 import { decryptSecret, encryptSecret } from "../utils/secretVault.js";
 
-const geminiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+const geminiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent";
+
+const isRetiredGeminiEndpoint = (value = "") => /^https:\/\/generativelanguage\.googleapis\.com\/v1beta\/models\/gemini-(?:1\.5|2(?:\.\d+)?)-[^/]+:generateContent(?:\?.*)?$/i.test(value);
 
 const safeUrl = (value, provider) => {
     if (!value) return provider === "gemini"
@@ -29,7 +31,10 @@ export const saveAiSettings = async (req, res, next) => {
             });
         }
         const provider = req.body.provider === "openai-compatible" ? "openai-compatible" : "gemini";
-        const endpoint = safeUrl(String(req.body.baseUrl || "").trim(), provider);
+        const requestedEndpoint = safeUrl(String(req.body.baseUrl || "").trim(), provider);
+        const endpoint = provider === "gemini" && isRetiredGeminiEndpoint(requestedEndpoint)
+            ? geminiEndpoint
+            : requestedEndpoint;
         const apiKey = String(req.body.apiKey || "").trim();
         if (!apiKey) throw new Error("An API key is required when saving AI settings.");
         const update = { "aiCredentials.baseUrl": endpoint, "aiCredentials.provider": provider, "aiCredentials.updatedAt": new Date() };
@@ -44,7 +49,7 @@ export const saveAiSettings = async (req, res, next) => {
 export const getUserCredentials = async (userId) => {
     const user = await User.findById(userId).select("+aiCredentials.encryptedApiKey").lean();
     if (!user?.aiCredentials?.encryptedApiKey) return {};
-    const baseUrl = user.aiCredentials.provider === "gemini" && user.aiCredentials.baseUrl?.includes("gemini-2.0-flash")
+    const baseUrl = user.aiCredentials.provider === "gemini" && isRetiredGeminiEndpoint(user.aiCredentials.baseUrl)
         ? geminiEndpoint
         : user.aiCredentials.baseUrl;
     try {

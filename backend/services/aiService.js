@@ -1,5 +1,6 @@
-const endpoint = process.env.AI_API_URL || "https://api.openai.com/v1/chat/completions";
-const geminiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+const openAiEndpoint = process.env.AI_API_URL || "https://api.openai.com/v1/chat/completions";
+const geminiModel = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent`;
 
 const normaliseDifficulty = (value) => {
     const difficulty = String(value || "beginner").toLowerCase();
@@ -11,22 +12,50 @@ const parseJson = (text) => {
     return JSON.parse(cleaned);
 };
 
+const normaliseMiniProject = (value) => {
+    if (typeof value === "string" && value.trim()) return value.trim();
+    if (value && typeof value === "object") {
+        const title = String(value.title || value.name || "").trim();
+        const description = String(value.description || value.details || "").trim();
+        const combined = [title, description].filter(Boolean).join(": ");
+        if (combined) return combined;
+    }
+    return "Apply this week's concepts by building a small practical project.";
+};
+
+const getProvider = (credentials) => credentials.provider
+    || process.env.AI_PROVIDER
+    || (process.env.GEMINI_API_KEY ? "gemini" : "openai-compatible");
+
+const getProviderError = async (response) => {
+    let message = "";
+    try {
+        const body = await response.json();
+        message = body?.error?.message || body?.message || "";
+    } catch {
+        // The status below is still useful when the provider does not return JSON.
+    }
+    return message ? ` ${message}` : "";
+};
+
 const requestJson = async (prompt, credentials = {}) => {
-    const apiKey = credentials.apiKey || process.env.AI_API_KEY;
+    const provider = getProvider(credentials);
+    const isGemini = provider === "gemini";
+    const apiKey = credentials.apiKey || (isGemini ? process.env.GEMINI_API_KEY || process.env.AI_API_KEY : process.env.AI_API_KEY);
     if (!apiKey) {
-        throw new Error("AI roadmap generation is not configured yet.");
+        throw new Error(isGemini
+            ? "Gemini is not configured. Add GEMINI_API_KEY to backend/.env or save a key in AI Settings."
+            : "AI roadmap generation is not configured yet.");
     }
 
-    const provider = credentials.provider || "openai-compatible";
-    const isGemini = provider === "gemini";
     const requestUrl = isGemini
-        ? `${credentials.baseUrl || geminiEndpoint}${(credentials.baseUrl || "").includes("?") ? "&" : "?"}key=${encodeURIComponent(apiKey)}`
-        : credentials.baseUrl || endpoint;
+        ? credentials.baseUrl || geminiEndpoint
+        : credentials.baseUrl || openAiEndpoint;
     const response = await fetch(requestUrl, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            ...(isGemini ? {} : { Authorization: `Bearer ${apiKey}` }),
+            ...(isGemini ? { "x-goog-api-key": apiKey } : { Authorization: `Bearer ${apiKey}` }),
         },
         body: JSON.stringify(isGemini ? {
             systemInstruction: { parts: [{ text: "You create concise, practical learning plans. Return valid JSON only." }] },
@@ -45,7 +74,8 @@ const requestJson = async (prompt, credentials = {}) => {
     });
 
     if (!response.ok) {
-        throw new Error(`AI provider request failed with status ${response.status}. Check your API key, model access, and quota.`);
+        const providerMessage = await getProviderError(response);
+        throw new Error(`AI provider request failed with status ${response.status}.${providerMessage} Check your API key, model access, and quota.`);
     }
     const payload = await response.json();
     const content = isGemini
@@ -70,13 +100,23 @@ const validateRoadmap = (data) => {
             difficulty: normaliseDifficulty(week.difficulty),
             estimatedHours: Number(week.estimatedHours) || 4,
             learningObjectives: Array.isArray(week.learningObjectives) ? week.learningObjectives.slice(0, 8).map(String) : [],
-            topics: week.topics.slice(0, 12).map((topic) => ({
-                title: typeof topic === "string" ? topic : topic.title,
-                description: typeof topic === "string" ? "" : String(topic.description || ""),
-                estimatedMinutes: typeof topic === "string" ? 30 : Number(topic.estimatedMinutes) || 30,
-                resources: Array.isArray(topic.resources) ? topic.resources.slice(0, 5) : [],
-            })),
-            miniProject: String(week.miniProject || "Review and apply this week's concepts."),
+            topics: week.topics.slice(0, 12).map((topic) => {
+                const title = typeof topic === "string" ? topic : String(topic?.title || "").trim();
+                if (!title) throw new Error("The AI returned a topic without a title.");
+                return {
+                    title,
+                    description: typeof topic === "string" ? "" : String(topic.description || ""),
+                    estimatedMinutes: typeof topic === "string" ? 30 : Number(topic.estimatedMinutes) || 30,
+                    resources: Array.isArray(topic.resources)
+                        ? topic.resources.slice(0, 5).filter((resource) => resource?.title).map((resource) => ({
+                            title: String(resource.title).slice(0, 160),
+                            url: String(resource.url || "").slice(0, 500),
+                            type: String(resource.type || "").slice(0, 40),
+                        }))
+                        : [],
+                };
+            }),
+            miniProject: normaliseMiniProject(week.miniProject),
         };
     });
 
@@ -89,7 +129,7 @@ const validateRoadmap = (data) => {
 };
 
 export const generateRoadmap = async ({ goal, currentLevel, studyHoursPerDay, durationWeeks, learningStyle, credentials }) => {
-    const prompt = `Generate structured JSON for a ${durationWeeks}-week roadmap for goal "${goal}". Learner level: ${currentLevel}. Daily study hours: ${studyHoursPerDay}. Preferred style: ${learningStyle || "mixed"}. Return {title,description,duration,weeks:[{week,title,difficulty,estimatedHours,learningObjectives:[string],topics:[{title,description,estimatedMinutes,resources:[{title,url,type}]}],miniProject,quizTopics:[string]}]}. Do not return markdown.`;
+    const prompt = `Generate structured JSON for exactly ${durationWeeks} weeks for goal "${goal}". Learner level: ${currentLevel}. Daily study hours: ${studyHoursPerDay}. Preferred style: ${learningStyle || "mixed"}. Return {title,description,duration,weeks:[{week,title,difficulty,estimatedHours,learningObjectives:[string],topics:[{title,description,estimatedMinutes,resources:[{title,url,type}]}],miniProject,quizTopics:[string]}]}. miniProject must be one concise plain-text string, not an object. Every week must have a title and at least one topic with a title. Use only valid, public resource URLs. Do not return markdown.`;
 
     let lastError;
     for (let attempt = 0; attempt < 2; attempt += 1) {
