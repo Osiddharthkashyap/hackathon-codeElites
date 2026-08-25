@@ -2725,6 +2725,53 @@ footer {
     cursor: pointer;
 }
 
+/* Smart 404 */
+.not-found-page {
+    min-height: calc(100vh - 160px);
+    display: grid;
+    place-items: center;
+    padding: 56px 20px;
+    background: radial-gradient(circle at top, rgba(86, 55, 201, 0.12), transparent 38%), #f8f9fc;
+}
+
+.not-found-card {
+    width: min(100%, 680px);
+    padding: 48px;
+    border: 1px solid #e4e7ee;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 20px 60px rgba(31, 35, 54, 0.10);
+    text-align: center;
+}
+
+.not-found-code {
+    margin: 0 0 8px;
+    color: #5637c9;
+    font-size: clamp(72px, 16vw, 132px);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.08em;
+}
+
+.not-found-card h1 { margin: 8px 0 12px; color: #1f2433; font-size: clamp(28px, 5vw, 38px); }
+.not-found-description { max-width: 500px; margin: 0 auto; color: #737b8c; line-height: 1.7; }
+.not-found-request, .route-suggestion { margin-top: 26px; padding: 18px; border-radius: 12px; background: #f8f6ff; }
+.not-found-request span, .route-suggestion > span { display: block; color: #737b8c; font-size: 12px; font-weight: 600; }
+.not-found-request code, .route-suggestion code { display: block; margin-top: 7px; color: #5637c9; overflow-wrap: anywhere; }
+.route-suggestion { display: grid; gap: 7px; border: 1px solid #ded7fb; }
+.route-suggestion strong { color: #1f2433; font-size: 18px; }
+.route-suggestion .primary-button { justify-self: center; margin-top: 8px; }
+.not-found-no-match { margin: 26px 0 0; color: #737b8c; }
+.not-found-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 28px; }
+.not-found-actions .secondary-button { border: 1px solid #e4e7ee; cursor: pointer; font: inherit; }
+
+@media (max-width: 600px) {
+    .not-found-page { padding: 30px 14px; }
+    .not-found-card { padding: 34px 20px; box-shadow: none; }
+    .not-found-actions { flex-direction: column; }
+    .not-found-actions .secondary-button { width: 100%; }
+}
+
 /* =========================================
    LEARNING PAGE
 ========================================= */

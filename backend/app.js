@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoute.js";
 import connectDB, { isValidMongoUri } from "./config/db.js";
 import { requireAuth, requireRole } from "./middleware/authMiddlewares.js";
 import User from "./models/User.js";
+import { notFoundMiddleware } from "./middleware/notFoundMiddleware.js";
 
 
 // ------------------------------------
@@ -227,6 +228,8 @@ app.get("/health", (req, res) => {
 app.get("/admin", requireAuth, requireRole("admin"), (req, res) => {
     res.render("admin/index");
 });
+
+app.use(notFoundMiddleware(app));
 
 const startServer = async () => {
     try {
