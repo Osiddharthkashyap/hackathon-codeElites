@@ -1,0 +1,29 @@
+<%- include("../partials/header", { pageTitle: "Learning | LearnFlow AI" }) %>
+
+<main class="learning-page">
+    <div class="learning-container">
+        <header class="learning-topbar">
+            <a href="/roadmap" class="learning-back">← Roadmap</a>
+            <strong class="learning-brand">LearnFlow AI</strong>
+        </header>
+
+        <section class="learning-welcome">
+            <span class="onboarding-step-label">YOUR NEXT LESSON</span>
+            <h1>Keep your learning momentum.</h1>
+            <p>Continue with the next step in your personalized path.</p>
+
+            <article class="lesson-preview">
+                <div>
+                    <span class="lesson-kicker">LESSON 01</span>
+                    <h2><%= lesson.title %></h2>
+                    <p><%= lesson.description %></p>
+                </div>
+                <a href="/learning/<%= lesson.slug %>" class="lesson-action">
+                    Start Lesson <span>→</span>
+                </a>
+            </article>
+        </section>
+    </div>
+</main>
+
+<%- include("../partials/footer") %>

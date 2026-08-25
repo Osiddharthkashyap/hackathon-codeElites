@@ -1,0 +1,37 @@
+<%- include("../partials/header", { pageTitle: lesson.title + " | LearnFlow AI" }) %>
+
+<main class="learning-page">
+    <div class="learning-container lesson-container">
+        <header class="learning-topbar">
+            <a href="/learning" class="learning-back">← Learning</a>
+            <strong class="learning-brand">LearnFlow AI</strong>
+        </header>
+
+        <article class="lesson-content">
+            <span class="onboarding-step-label">LESSON 01</span>
+            <h1><%= lesson.title %></h1>
+            <div class="lesson-meta"><span><%= lesson.duration %></span><span>FOUNDATIONS</span></div>
+
+            <p class="lesson-lead"><%= lesson.objective %></p>
+
+            <section class="lesson-section">
+                <h2>What is HTML?</h2>
+                <p>HTML, or HyperText Markup Language, describes the structure of a webpage. It uses elements such as headings, paragraphs, links, and images to give content meaning.</p>
+            </section>
+
+            <section class="lesson-section">
+                <h2>Your first HTML document</h2>
+                <p>A document usually contains a <code>head</code> for metadata and a <code>body</code> for the content people see.</p>
+                <pre><code>&lt;h1&gt;Hello, world!&lt;/h1&gt;
+&lt;p&gt;My first webpage.&lt;/p&gt;</code></pre>
+            </section>
+
+            <div class="lesson-completion">
+                <p>Finished this lesson? Check what you learned next.</p>
+                <a href="/quiz" class="lesson-action">Mark as Complete <span>→</span></a>
+            </div>
+        </article>
+    </div>
+</main>
+
+<%- include("../partials/footer") %>
