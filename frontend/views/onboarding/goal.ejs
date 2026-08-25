@@ -1,0 +1,241 @@
+<%- include("../partials/header", { pageTitle: "Choose Your Goal | LearnFlow AI" }) %>
+
+    <main class="onboarding-page">
+
+        <section class="onboarding-card">
+
+            <!-- Brand -->
+
+            <a href="/" class="onboarding-brand">
+
+                <span class="onboarding-brand-icon">
+                    ✦
+                </span>
+
+                <span>
+                    LearnFlow AI
+                </span>
+
+            </a>
+
+
+            <!-- Progress Steps -->
+
+            <div class="onboarding-progress">
+
+                <div class="progress-step active">
+
+                    <div class="step-number">
+                        1
+                    </div>
+
+                    <span>
+                        Goal
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <div class="progress-step">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <span>
+                        Experience
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <div class="progress-step">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <span>
+                        Preferences
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Content -->
+
+            <div class="onboarding-content">
+
+                <span class="onboarding-step-label">
+                    STEP 1 OF 3
+                </span>
+
+
+                <h1>
+                    What do you want to learn?
+                </h1>
+
+
+                <p class="onboarding-description">
+
+                    Choose your learning goal and LearnFlow AI will
+                    create a personalized roadmap for you.
+
+                </p>
+
+            </div>
+
+
+            <!-- Goal Form -->
+
+            <form id="goalForm" class="goal-form">
+
+                <!-- Main Learning Goal -->
+
+                <div class="form-group">
+
+                    <label for="learningGoal">
+                        Choose your learning goal
+                    </label>
+
+
+                    <div class="select-wrapper">
+
+                        <select id="learningGoal" name="learningGoal" required>
+
+                            <option value="">
+                                Select a learning path
+                            </option>
+
+                            <option value="full-stack-development">
+                                Full Stack Development
+                            </option>
+
+                            <option value="frontend-development">
+                                Frontend Development
+                            </option>
+
+                            <option value="backend-development">
+                                Backend Development
+                            </option>
+
+                            <option value="data-science">
+                                Data Science
+                            </option>
+
+                            <option value="machine-learning">
+                                Machine Learning
+                            </option>
+
+                            <option value="ui-ux-design">
+                                UI / UX Design
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Popular Goals -->
+
+                <div class="popular-goals">
+
+                    <p>
+                        Popular goals
+                    </p>
+
+
+                    <div class="goal-options">
+
+                        <button type="button" class="goal-option" data-goal="Web Development">
+                            Web Development
+                        </button>
+
+
+                        <button type="button" class="goal-option" data-goal="Data Science">
+                            Data Science
+                        </button>
+
+
+                        <button type="button" class="goal-option" data-goal="Python">
+                            Python
+                        </button>
+
+
+                        <button type="button" class="goal-option" data-goal="JavaScript">
+                            JavaScript
+                        </button>
+
+
+                        <button type="button" class="goal-option" data-goal="UI/UX Design">
+                            UI/UX Design
+                        </button>
+
+
+                        <button type="button" class="goal-option" data-goal="Academic Learning">
+                            Academic Learning
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Custom Goal -->
+
+                <div class="form-group custom-goal-group">
+
+                    <label for="customGoal">
+
+                        Or describe your own goal
+
+                        <span>
+                            Optional
+                        </span>
+
+                    </label>
+
+
+                    <textarea id="customGoal" name="customGoal" rows="4"
+                        placeholder="Example: I want to learn JavaScript so I can build modern web applications."></textarea>
+
+                </div>
+
+
+                <!-- Actions -->
+
+                <div class="onboarding-actions">
+
+                    <a href="/" class="back-button">
+                        ← Back
+                    </a>
+
+
+                    <button type="submit" class="continue-button">
+                        Continue
+                        <span>
+                            →
+                        </span>
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script src="/js/onboarding.js"></script>
+
+    <%- include("../partials/footer") %>

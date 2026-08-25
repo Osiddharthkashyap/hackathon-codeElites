@@ -44,8 +44,12 @@ app.get("/", (req, res) => {
     res.render("home");
 });
 
-app.get("/health", (req, res) => {
-    res.status(200).json({ status: "ok" });
+app.get("/onboarding", (req, res) => {
+    res.render("onboarding/goal");
+});
+
+app.get("/onboarding/experience", (req, res) => {
+    res.send("Experience onboarding page coming next.");
 });
 
 app.listen(PORT, () => {
