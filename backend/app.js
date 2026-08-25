@@ -58,7 +58,13 @@ app.get("/roadmap", (req, res) => {
 });
 
 app.get("/learning", (req, res) => {
-    res.send("Learning page coming next.");
+    res.render("learning/index");
+});
+
+app.get("/learning/:lessonId", (req, res) => {
+    res.render("learning/lesson", {
+        lessonId: req.params.lessonId
+    });
 });
 
 app.get("/login", (req, res) => {
@@ -67,6 +73,10 @@ app.get("/login", (req, res) => {
 
 app.get("/register", (req, res) => {
     res.render("auth/register");
+});
+
+app.get("/quiz", (req, res) => {
+    res.send("Quiz page coming next.");
 });
 
 app.get("/health", (req, res) => {
